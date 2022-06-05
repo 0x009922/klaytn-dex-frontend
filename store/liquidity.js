@@ -1,7 +1,8 @@
 import kip7 from "@/utils/smartcontracts/kip-7.json";
 import pairAbi from "@/utils/smartcontracts/pair.json";
 import config from "@/plugins/Config";
-
+import request from "@/services";
+import { getAllPairsQuery } from "@/services/graphql/pairs";
 export const state = () => ({
   liquidityStatus: "init",
   pairs: [],
@@ -109,70 +110,76 @@ export const actions = {
   // },
 
   async getPairs({ commit }) {
-    const pairsCount = await this.$kaikas.config.factoryContract.methods
-      .allPairsLength()
-      .call();
+    const { data: resData } = await request(getAllPairsQuery());
+    const pairs = resData.pairs.map((p) => {
+      const symbols = p.name.split("-");
+      return {
+        ...p,
+        symbolA: symbols[0],
+        symbolB: symbols[1],
+      };
+    });
 
-    const pairs = await Promise.all(
-      new Array(Number(pairsCount)).fill(null).map(async (it, i) => {
-        let pair = {};
-
-        const address = await this.$kaikas.config.factoryContract.methods
-          .allPairs(i)
-          .call();
-
-        pair.address = address;
-
-        const contract = this.$kaikas.config.createContract(
-          address,
-          pairAbi.abi
-        );
-
-        const addressA = await contract.methods.token0().call();
-        const addressB = await contract.methods.token1().call();
-
-        const contractA = this.$kaikas.config.createContract(
-          addressA,
-          kip7.abi
-        );
-        const contractB = this.$kaikas.config.createContract(
-          addressB,
-          kip7.abi
-        );
-
-        let name = await contract.methods.name().call();
-        let symbol = await contract.methods.symbol().call();
-
-        if (
-          !this.$kaikas.utils.isEmptyAddress(addressA) &&
-          !this.$kaikas.utils.isEmptyAddress(addressB)
-        ) {
-          const symbolA = await contractA.methods.symbol().call();
-          const symbolB = await contractB.methods.symbol().call();
-
-          name = `${symbolA} - ${symbolB}`;
-
-          pair.symbolA = symbolA;
-          pair.symbolB = symbolB;
-        }
-
-        const pairBalance = await contract.methods.totalSupply().call();
-        const userBalance = await contract.methods
-          .balanceOf(this.$kaikas.config.address)
-          .call();
-
-        const reserves = await contract.methods.getReserves().call();
-
-        return {
-          ...pair,
-          userBalance,
-          pairBalance,
-          symbol,
-          name,
-          reserves,
-        };
-      })
-    );
+    // const pairs = await Promise.all(
+    //   new Array(Number(pairsCount)).fill(null).map(async (it, i) => {
+    //     let pair = {};
+    //
+    //     const address = await this.$kaikas.config.factoryContract.methods
+    //       .allPairs(i)
+    //       .call();
+    //
+    //     pair.address = address;
+    //
+    //     const contract = this.$kaikas.config.createContract(
+    //       address,
+    //       pairAbi.abi
+    //     );
+    //
+    //     const addressA = await contract.methods.token0().call();
+    //     const addressB = await contract.methods.token1().call();
+    //
+    //     const contractA = this.$kaikas.config.createContract(
+    //       addressA,
+    //       kip7.abi
+    //     );
+    //     const contractB = this.$kaikas.config.createContract(
+    //       addressB,
+    //       kip7.abi
+    //     );
+    //
+    //     let name = await contract.methods.name().call();
+    //     let symbol = await contract.methods.symbol().call();
+    //
+    //     if (
+    //       !this.$kaikas.utils.isEmptyAddress(addressA) &&
+    //       !this.$kaikas.utils.isEmptyAddress(addressB)
+    //     ) {
+    //       const symbolA = await contractA.methods.symbol().call();
+    //       const symbolB = await contractB.methods.symbol().call();
+    //
+    //       name = `${symbolA} - ${symbolB}`;
+    //
+    //       pair.symbolA = symbolA;
+    //       pair.symbolB = symbolB;
+    //     }
+    //
+    //     const pairBalance = await contract.methods.totalSupply().call();
+    //     const userBalance = await contract.methods
+    //       .balanceOf(this.$kaikas.config.address)
+    //       .call();
+    //
+    //     const reserves = await contract.methods.getReserves().call();
+    //
+    //     return {
+    //       ...pair,
+    //       userBalance,
+    //       pairBalance,
+    //       symbol,
+    //       name,
+    //       reserves,
+    //     };
+    //   })
+    // );
 
     commit("SET_PAIRS", pairs);
   },
@@ -544,7 +551,6 @@ export const actions = {
     };
 
     try {
-
       const removeLiqGas = await this.$kaikas.config.routerContract.methods
         .removeLiquidity(
           params.addressA,

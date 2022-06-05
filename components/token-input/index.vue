@@ -80,10 +80,9 @@ export default {
       return roundTo(Number(web3.utils.fromWei(this.selected.balance)), 5);
     },
     price() {
-      return "-";
-      // return this.selected?.price?.price
-      //   ? `$${roundTo(this.selected?.price?.price, 5)}`
-      //   : "Price loading";
+      return this.selected?.derivedUSD
+        ? `$${roundTo(Number(this.selected?.derivedUSD), 5)}`
+        : "-";
     },
     value() {
       if (!this.selected?.value) {

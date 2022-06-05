@@ -14,7 +14,6 @@
       </div>
     </div>
 
-
     <div class="token-select-modal--recent row">
       <div
         class="token-select-modal--tag"
@@ -54,6 +53,7 @@
           <p class="token">{{ t.symbol }}</p>
           <span class="token-name">{{ t.name.toLowerCase() }}</span>
         </div>
+
         <TextField :title="`${t.balance} ${t.symbol}`" class="token-count">
           {{ getRenderBalance(t.balance) }} {{ t.symbol }}
         </TextField>
@@ -75,22 +75,28 @@ export default {
     };
   },
   computed: {
-    ...mapState("tokens", ["tokensList"]),
+    ...mapState("tokens", ["tokensList", "selectedTokens"]),
     renderTokens() {
-      return this.tokensList.filter(
-        (token) =>
-          token.symbol.search(this.searchValue.toUpperCase()) !== -1 ||
-          token.address === this.searchValue
-      );
+      return this.tokensList
+        .filter(
+          (t) =>
+            t.id !== this.selectedTokens?.tokenA?.address &&
+            t.id !== this.selectedTokens?.tokenB?.address
+        )
+        .filter(
+          (token) =>
+            token.symbol.search(this.searchValue.toUpperCase()) !== -1 ||
+            token.address === this.searchValue
+        );
     },
   },
   methods: {
     ...mapMutations({
       updateTokens: "tokens/SET_TOKENS",
     }),
-    getRenderBalance(balance){
-      const value = this.$kaikas.bigNumber(this.$kaikas.fromWei(balance))
-      return value.toFixed(4)
+    getRenderBalance(balance) {
+      const value = this.$kaikas.bigNumber(this.$kaikas.fromWei(balance));
+      return value.toFixed(4);
     },
     onSelect(t) {
       if (Number(t.balance) <= 0) {
@@ -104,7 +110,7 @@ export default {
         this.updateTokens([this.importToken, ...this.tokensList]);
         this.searchValue = "";
         this.importToken = null;
-        this.$notify({ type: 'success', text: 'Token added' })
+        this.$notify({ type: "success", text: "Token added" });
       }
     },
   },

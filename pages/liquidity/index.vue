@@ -12,7 +12,7 @@
     </div>
     <div v-else-if="!renderPairs.length">Empty</div>
     <div class="liquidity--list" v-else>
-      <div class="liquidity--item" v-for="p in renderPairs" :key="p.address">
+      <div class="liquidity--item" v-for="p in renderPairs" :key="p.id">
         <Collapse>
           <template v-slot:head>
             <div class="pair--head">
@@ -34,8 +34,8 @@
               <!--                alt=""-->
               <!--              />-->
               <span class="pair--names"> {{ p.name }} </span>
-              <span class="pair--rate" v-if="p.userBalance">
-                {{ getFormatted(p.userBalance) }}
+              <span class="pair--rate" >
+                {{ getFormatted(p.reserveKLAY) }}
                 <!--                <span class="pair&#45;&#45;rate-gray">($5.87) </span>-->
               </span>
             </div>
@@ -43,45 +43,33 @@
           <template v-slot:main>
             <div class="pair--main">
               <div class="pair--info">
-                <div class="pair--row" v-if="p.pairBalance">
+                <div class="pair--row" >
                   <span>Pooled {{ p.symbolA }}</span>
-                  <span>{{
-                    getFormattedTokens(
-                      p.userBalance,
-                      p.pairBalance,
-                      p.reserves[0]
-                    )
-                  }}</span>
+                  <span>{{ getFormatted(p.reserve0) }}</span>
                 </div>
-                <div class="pair--row" v-if="p.pairBalance">
+                <div class="pair--row">
                   <span>Pooled {{ p.symbolB }}</span>
-                  <span>{{
-                    getFormattedTokens(
-                      p.userBalance,
-                      p.pairBalance,
-                      p.reserves[1]
-                    )
-                  }}</span>
+                  <span>{{ getFormatted(p.reserve1) }}</span>
                 </div>
-                <div class="pair--row" v-if="p.pairBalance">
-                  <span>Pooled {{ p.name }}</span>
-                  <span>{{ getFormatted(p.pairBalance) }}</span>
-                </div>
-                <div class="pair--row">
-                  <span>Your pool tokens:</span>
-                  <span>{{ getFormatted(p.userBalance) }}</span>
-                </div>
-                <div class="pair--row">
-                  <span>Your pool share:</span>
-                  <span>{{
-                    getFormattedPercent(p.pairBalance, p.userBalance)
-                  }}</span>
-                </div>
+<!--                <div class="pair&#45;&#45;row" v-if="p.pairBalance">-->
+<!--                  <span>Pooled {{ p.name }}</span>-->
+<!--                  <span>{{ getFormatted(p.pairBalance) }}</span>-->
+<!--                </div>-->
+<!--                <div class="pair&#45;&#45;row">-->
+<!--                  <span>Your pool tokens:</span>-->
+<!--                  <span>{{ getFormatted(p.userBalance) }}</span>-->
+<!--                </div>-->
+<!--                <div class="pair&#45;&#45;row">-->
+<!--                  <span>Your pool share:</span>-->
+<!--                  <span>{{-->
+<!--                    getFormattedPercent(p.pairBalance, p.userBalance)-->
+<!--                  }}</span>-->
+<!--                </div>-->
               </div>
 
               <div class="pair--links">
                 <RouterLink to="/liquidity/add">Add</RouterLink>
-                <RouterLink :to="`/liquidity/remove/${p.address}`">Remove</RouterLink>
+                <RouterLink :to="`/liquidity/remove/${p.id}`">Remove</RouterLink>
                 <a href="#" class="deposit">Deposit</a>
               </div>
             </div>
@@ -101,11 +89,13 @@ export default {
   computed: {
     ...mapState("liquidity", ["pairs"]),
     renderPairs() {
+      console.log(this.pairs.length)
+
       if (!this.pairs.length) {
         return null;
       }
 
-      return this.pairs.filter((p) => !!Number(p.userBalance));
+      return this.pairs /// this.pairs.filter((p) => !!Number(p.userBalance));
     },
   },
   beforeMount() {
@@ -116,7 +106,7 @@ export default {
       getPairs: "liquidity/getPairs",
     }),
     getFormatted(v) {
-      return roundTo(Number(web3.utils.fromWei(v)), 5);
+      return roundTo(Number(v), 5);
     },
     getFormattedPercent(v1, v2) {
       const bigNA = this.$kaikas.bigNumber(v1);
