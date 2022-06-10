@@ -4,6 +4,7 @@ import { useTokensStore } from '@/store/tokens'
 import { useLiquidityStore } from '@/store/liquidity'
 
 export default {
+  emits: ['close'],
   data() {
     return {
       status: 'initial',

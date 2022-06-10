@@ -1,8 +1,7 @@
 <script setup lang="ts">
 const { name, char } = defineProps<{
   name: string
-  char?
-  : string
+  char?: string
 }>()
 
 const CurrentIcon = defineAsyncComponent(() => import(`../../assets/svg/${name}.svg?component`))

@@ -11,6 +11,7 @@ export default {
       type: Number,
     },
   },
+  emits: ['onmove'],
   data() {
     return {
       value: this.propsValue,

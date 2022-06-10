@@ -20,6 +20,7 @@ export default {
       type: Boolean,
     },
   },
+  emits: ['input'],
   computed: {
     ...mapState(useTokensStore, ['selectedTokens']),
     selected() {

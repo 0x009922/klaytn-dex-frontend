@@ -11,6 +11,7 @@ export default {
       default: '300',
     },
   },
+  emits: ['close'],
 }
 </script>
 

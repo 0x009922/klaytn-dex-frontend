@@ -7,6 +7,7 @@ export default {
       default: null,
     },
   },
+  emits: ['select'],
   data() {
     return {
       modalOpen: false,

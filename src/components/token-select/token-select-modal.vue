@@ -5,6 +5,7 @@ import kip7 from '@/utils/smartcontracts/kip-7.json'
 
 export default {
   name: 'TokenSelectModal',
+  emits: ['close', 'select'],
   data() {
     return {
       searchValue: '',
