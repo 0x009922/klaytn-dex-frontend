@@ -50,7 +50,7 @@ export const useSwapStore = defineStore('swap', {
     async swapExactTokensForTokens() {
       const tokensStore = useTokensStore()
       try {
-        const { selectedTokens, computedToken } = tokens
+        const { selectedTokens } = tokensStore
 
         await config.approveAmount(
           selectedTokens.tokenA.address,

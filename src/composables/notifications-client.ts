@@ -1,3 +1,5 @@
 import { useNotifications } from '@soramitsu-ui/ui'
 
-export const $notify = useNotifications
+export const $notify = function (message: string) {
+  console.log(message)
+}

@@ -27,7 +27,7 @@ export default {
       <div class="head">
         <h3>{{ label || "" }}</h3>
         <button type="button" class="close" @click="$emit('close')">
-          <Icon name="close" />
+          <KlayIcon name="close" />
         </button>
       </div>
       <slot />
