@@ -3,7 +3,7 @@ import debounce from 'debounce'
 import { mapActions, mapState } from 'pinia'
 
 export default {
-  name: 'LiquidityRemoveDetailed',
+  name: 'LiquidityModuleRemoveDetailed',
   data() {
     return {
       lpTokenValue: null,

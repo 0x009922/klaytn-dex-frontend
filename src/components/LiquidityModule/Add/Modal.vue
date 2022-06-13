@@ -2,7 +2,7 @@
 import { mapActions, mapState } from 'pinia'
 
 export default {
-  name: 'LiquidityAddModal',
+  name: 'LiquidityModuleAddModal',
   emits: ['close'],
   data() {
     return {
@@ -70,7 +70,7 @@ export default {
 </script>
 
 <template>
-  <Modal width="344" label="Confirm Supply" @close="$emit('close')">
+  <KlayModal width="344" label="Confirm Supply" @close="$emit('close')">
     <div>
       <div
         v-if="status === 'initial' || status === 'in_progress'"
@@ -158,7 +158,7 @@ export default {
         </KlayButton>
       </div>
     </div>
-  </Modal>
+  </KlayModal>
 </template>
 
 <style lang="scss" scoped src="./index.scss"></style>

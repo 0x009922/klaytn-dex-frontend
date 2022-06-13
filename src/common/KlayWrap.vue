@@ -13,7 +13,7 @@ export default {
   <div class="wrap">
     <div class="head">
       <slot name="head">
-        <RouterLink to="/trade" class="head--btn" active-class="head--btn-active">
+        <RouterLink to="/swap" class="head--btn" active-class="head--btn-active">
           Swap
         </RouterLink>
         <RouterLink to="/liquidity" class="head--btn" active-class="head--btn-active">

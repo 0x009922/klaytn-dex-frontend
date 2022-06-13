@@ -1,9 +1,9 @@
 <script>
 export default {
-  name: 'Trade',
+  name: 'Swap',
 }
 </script>
 
 <template>
-  <Swap />
+  <SwapModule />
 </template>

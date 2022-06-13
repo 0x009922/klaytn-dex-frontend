@@ -19,7 +19,7 @@ export default {
     <h1 v-else>
       An error occurred
     </h1>
-    <router-link to="/trade">
+    <router-link to="/swap">
       Home page
     </router-link>
   </LayoutBase>

@@ -2,7 +2,7 @@
 import { mapActions, mapState } from 'pinia'
 
 export default {
-  name: 'Swap',
+  name: 'SwapModule',
   data() {
     return {
       isSwapLoading: false,
@@ -99,7 +99,7 @@ export default {
   </div>
 
   <KlayWrap v-else>
-    <SwapExchangeRate />
+    <SwapModuleExchangeRate />
 
     <div class="slippage">
       <KlaySlippage />
@@ -109,7 +109,7 @@ export default {
       {{ isSwapLoading ? "Wait" : "Swap" }}
     </KlayButton>
 
-    <SwapDetails />
+    <SwapModuleDetails />
 
     <div v-if="exchangeRateLoading">
       Exchange rate loading

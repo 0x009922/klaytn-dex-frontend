@@ -2,7 +2,7 @@
 import { mapActions, mapState } from 'pinia'
 
 export default {
-  name: 'LiquidityAdd',
+  name: 'LiquidityModuleAdd',
   data() {
     return {
       isOpen: false,
@@ -41,7 +41,7 @@ export default {
 
 <template>
   <div class="liquidity">
-    <LiquidityAddExchangeRate />
+    <LiquidityModuleAddExchangeRate />
 
     <div class="liquidity--slippage">
       <KlaySlippage />
@@ -51,7 +51,7 @@ export default {
       Supply
     </KlayButton>
 
-    <LiquidityAddModal v-if="isOpen" @close="isOpen = false" />
+    <LiquidityModuleAddModal v-if="isOpen" @close="isOpen = false" />
 
     <div v-if="isValid" class="liquidity--details">
       <h3>Prices and pool share</h3>

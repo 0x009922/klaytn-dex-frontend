@@ -4,6 +4,7 @@ import { roundTo } from 'round-to'
 import web3 from 'web3'
 
 export default {
+  name: 'Liquidity',
   computed: {
     ...mapState(useLiquidityStore, ['pairs']),
     renderPairs() {

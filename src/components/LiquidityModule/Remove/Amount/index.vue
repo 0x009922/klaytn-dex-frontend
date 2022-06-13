@@ -2,7 +2,7 @@
 import { mapActions, mapState } from 'pinia'
 
 export default {
-  name: 'LiquidityRemoveAmount',
+  name: 'LiquidityModuleRemoveAmount',
   data() {
     return {
       value: 9,
@@ -45,7 +45,7 @@ export default {
         {{ value }}%
       </div>
       <div class="rl-amount--slide">
-        <Slide :props-value="value" @onmove="onMove" />
+        <KlaySlider :props-value="value" @onmove="onMove" />
       </div>
       <div class="rl-amount--tags">
         <button type="button" class="rl-amount--tag" @click="value = 10">

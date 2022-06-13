@@ -2,7 +2,7 @@
 import { mapActions, mapState } from 'pinia'
 
 export default {
-  name: 'SwapDetails',
+  name: 'SwapModuleDetails',
   computed: {
     ...mapState(useTokensStore, ['selectedTokens']),
     getRoute() {
@@ -79,4 +79,4 @@ export default {
   </div>
 </template>
 
-<style scoped lang="scss" src="./details.scss"></style>
+<style scoped lang="scss" src="./index.scss"></style>

@@ -3,7 +3,7 @@ import debounce from 'debounce'
 import { mapActions, mapState } from 'pinia'
 
 export default {
-  name: 'SwapExchangeRate',
+  name: 'LiquidityModuleAddExchangeRate',
   data() {
     return {
       exchangeLoading: null,
@@ -12,22 +12,12 @@ export default {
   computed: {
     ...mapState(useTokensStore, ['selectedTokens']),
     isNotValid() {
-      return (
-        !this.selectedTokens.tokenA
-        || !this.selectedTokens.tokenB
-        || this.selectedTokens.emptyPair
-      )
+      return !this.selectedTokens.tokenA || !this.selectedTokens.tokenB
     },
   },
   methods: {
-    ...mapActions(useTokensStore, [
-      'setSelectedToken',
-      'setComputedToken',
-    ]),
-    ...mapActions(useSwapStore, [
-      'getAmountOut',
-      'getAmountIn',
-    ]),
+    ...mapActions(useTokensStore, ['Token', 'setComputedToken', 'setSelectedToken']),
+    ...mapActions(useLiquidityStore, ['quoteForTokenA', 'quoteForTokenB']),
     onInput: debounce(async function (_v, tokenType) {
       if (!_v || this.isNotValid)
         return
@@ -47,11 +37,15 @@ export default {
         type: tokenType,
       })
 
+      if (this.selectedTokens.emptyPair)
+        return
+
       this.setComputedToken(tokenType === 'tokenA' ? 'tokenB' : 'tokenA')
 
       if (tokenType === 'tokenA') {
         this.exchangeLoading = 'tokenB'
-        await this.getAmountOut(value)
+
+        await this.quoteForTokenB(value)
         // this.setExchangeRateIntervalID(
         //   setInterval(() => this.getAmountOut(value), 5000)
         // );
@@ -59,7 +53,8 @@ export default {
 
       if (tokenType === 'tokenB') {
         this.exchangeLoading = 'tokenA'
-        await this.getAmountIn(value)
+
+        await this.quoteForTokenA(value)
         // this.setExchangeRateIntervalID(
         //   setInterval(() => this.getAmountIn(value), 5000)
         // );
@@ -73,16 +68,20 @@ export default {
 
 <template>
   <div>
-    <TokenInput
-      :is-loading="exchangeLoading === 'tokenA'"
-      token-type="tokenA"
-      :is-disabled="isNotValid"
-      @input="(v) => onInput(v, 'tokenA')"
-    />
-    <button class="change-btn">
-      <KlayIcon name="arrow-down" />
-    </button>
-    <div class="margin-block">
+    <div class="liquidity--input">
+      <TokenInput
+        :is-loading="exchangeLoading === 'tokenA'"
+        token-type="tokenA"
+        :is-disabled="isNotValid"
+        @input="(v) => onInput(v, 'tokenA')"
+      />
+    </div>
+
+    <div class="liquidity--icon">
+      <KlayIcon name="plus" />
+    </div>
+
+    <div class="liquidity--input">
       <TokenInput
         :is-loading="exchangeLoading === 'tokenB'"
         token-type="tokenB"

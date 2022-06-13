@@ -2,7 +2,7 @@
 import { mapActions, mapState } from 'pinia'
 
 export default {
-  name: 'LiquidityRemove',
+  name: 'LiquidityModuleRemove',
   data() {
     return {
       active: 'amount',
@@ -45,8 +45,8 @@ export default {
       </div>
     </div>
 
-    <LiquidityRemoveAmount v-if="active === 'amount'" />
-    <LiquidityRemoveDetailed v-if="active === 'detailed'" />
+    <LiquidityModuleRemoveAmount v-if="active === 'amount'" />
+    <LiquidityModuleRemoveDetailed v-if="active === 'detailed'" />
 
     <KlayButton type="button" class="mt" @click="removeLiquidity">
       Remove

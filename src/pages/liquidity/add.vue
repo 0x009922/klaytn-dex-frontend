@@ -1,3 +1,9 @@
+<script>
+export default {
+  name: 'LiquidityAdd',
+}
+</script>
+
 <template>
   <KlayWrap>
     <template #head>
@@ -9,7 +15,7 @@
       </RouterLink>
     </template>
     <div class="add-liq">
-      <LiquidityAdd />
+      <LiquidityModuleAdd />
     </div>
   </KlayWrap>
 </template>

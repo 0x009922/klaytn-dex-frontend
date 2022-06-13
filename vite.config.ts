@@ -47,7 +47,7 @@ export default defineConfig({
     Pages({
       extensions: ['vue', 'md'],
       extendRoute(route) {
-        if (route.path === '/trade') {
+        if (route.path === '/swap') {
           return {
             ...route,
             alias: '/',
@@ -86,7 +86,7 @@ export default defineConfig({
       // allow auto import and register components used in markdown
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
       dts: 'src/components.d.ts',
-      directoryAsNamespace: false,
+      directoryAsNamespace: true,
     }),
 
     // https://github.com/antfu/vite-plugin-md

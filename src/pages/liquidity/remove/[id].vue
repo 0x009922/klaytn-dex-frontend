@@ -2,6 +2,7 @@
 import { mapActions, mapState } from 'pinia'
 
 export default {
+  name: 'LiquidityRemove',
   computed: {
     ...mapState(useTokensStore, ['selectedTokens']),
     isValid() {
@@ -12,7 +13,7 @@ export default {
     this.setSelectedTokensByPair(this.$route.params.id)
   },
   methods: {
-    ...mapActions(useTokensStore, ['tokens/setSelectedTokensByPair']),
+    ...mapActions(useTokensStore, ['setSelectedTokensByPair']),
   },
 }
 </script>
@@ -30,12 +31,12 @@ export default {
       </RouterLink>
     </template>
     <div class="add-liq">
-      <LiquidityRemove v-if="isValid" />
+      <LiquidityModuleRemove v-if="isValid" />
       <div v-else class="loader-wrapper">
         <KlayLoader />
       </div>
     </div>
-  </Wrap>
+  </KlayWrap>
 </template>
 
 <style lang="scss" scoped>

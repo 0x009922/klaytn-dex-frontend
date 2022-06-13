@@ -22,7 +22,7 @@ export default {
         },
         {
           label: 'Trade',
-          link: '/trade',
+          link: '/swap',
         },
         {
           label: 'Deposit',

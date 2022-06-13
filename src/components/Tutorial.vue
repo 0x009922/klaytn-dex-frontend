@@ -29,7 +29,7 @@ export default {
       <br>
       <KlayButton type="button" @click="connect()">
         Connect
-      </Button>
+      </KlayButton>
     </div>
 
     <div v-else>
@@ -43,13 +43,13 @@ export default {
     <br>
     <KlayButton type="button">
       Button
-    </Button>
+    </KlayButton>
     <KlayButton type="button" :loading="true">
       Loading
-    </Button>
+    </KlayButton>
     <KlayButton type="button" disabled>
       Button
-    </Button>
+    </KlayButton>
     <br>
 
     <br>
