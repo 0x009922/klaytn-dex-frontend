@@ -1,5 +1,10 @@
-import { useNotifications } from '@soramitsu-ui/ui'
+import { type Status, useNotifications } from '@soramitsu-ui/ui'
 
-export const $notify = function (message: string) {
-  console.log(message)
+export const $notify = function ({ type, text }: { type: Status; text: string }) {
+  console.log(text)
+  // const { show } = useNotifications()
+  // show({
+  //   status: type,
+  //   descriptionSlot: () => [text],
+  // })
 }

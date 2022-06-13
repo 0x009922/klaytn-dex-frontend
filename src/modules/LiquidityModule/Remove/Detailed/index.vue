@@ -17,17 +17,14 @@ export default {
     this.lpTokenValue = this.removeLiquidityPair.lpTokenValue
   },
   methods: {
-    ...mapActions(useLiquidityStore, {
-      setLpValue: 'setRmLiqValue',
-      calcRemoveLiquidityAmounts: 'calcRemoveLiquidityAmounts',
-    }),
+    ...mapActions(useLiquidityStore, ['setRmLiqValue', 'calcRemoveLiquidityAmounts']),
     setMax() {
       const v = this.getFormattedValue(this.selectedTokens.userBalance)
       this.onInput(v.toString())
       this.lpTokenValue = v
     },
     onInput: debounce(async function (_v) {
-      this.setLpValue(_v)
+      this.setRmLiqValue(_v)
       this.calcRemoveLiquidityAmounts(_v)
     }, 500),
     getFormattedRate(v1, v2) {

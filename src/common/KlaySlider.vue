@@ -5,14 +5,14 @@
 export default {
   name: 'KlaySlider',
   components: {
-    // VueSlider
+    // VueSlider,
   },
   props: {
     propsValue: {
       type: Number,
     },
   },
-  emits: ['onmove'],
+  emits: ['move'],
   data() {
     return {
       value: this.propsValue,
@@ -20,7 +20,7 @@ export default {
   },
   watch: {
     value(_new, _old) {
-      this.$emit('onmove', _new)
+      this.$emit('move', _new)
     },
     propsValue() {
       this.value = this.propsValue
@@ -31,6 +31,6 @@ export default {
 
 <template>
   <div>
-    <!-- <vue-slider lazy v-model="value"></vue-slider> -->
+    <!-- <VueSlider v-model="value" lazy /> -->
   </div>
 </template>

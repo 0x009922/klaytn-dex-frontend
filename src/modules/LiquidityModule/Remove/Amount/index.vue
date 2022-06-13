@@ -23,7 +23,7 @@ export default {
       const value = bnValue.dividedBy(100).multipliedBy(v).toFixed(0)
       const renderValue = $kaikas.utils.bigNumber($kaikas.utils.fromWei(value))
 
-      this.setLpValue(renderValue.toFixed(5))
+      this.setRmLiqValue(renderValue.toFixed(5))
       this.calcRemoveLiquidityAmounts(renderValue.toFixed(5))
     },
     getFormattedValue(_v) {
@@ -45,7 +45,7 @@ export default {
         {{ value }}%
       </div>
       <div class="rl-amount--slide">
-        <KlaySlider :props-value="value" @onmove="onMove" />
+        <KlaySlider :props-value="value" @move="onMove" />
       </div>
       <div class="rl-amount--tags">
         <button type="button" class="rl-amount--tag" @click="value = 10">

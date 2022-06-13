@@ -408,7 +408,8 @@ export const useLiquidityStore = defineStore('liquidity', {
       return await send()
     },
     async calcRemoveLiquidityAmounts(lpTokenValue) {
-      const { selectedTokens } = tokens
+      const tokensStore = useTokensStore()
+      const { selectedTokens } = tokensStore
       const pairAddress = selectedTokens.pairAddress
       const pairContract = $kaikas.config.createContract(
         pairAddress,
@@ -462,7 +463,8 @@ export const useLiquidityStore = defineStore('liquidity', {
       }
     },
     async removeLiquidity({ rootState: { tokens, liquidity } }) {
-      const { selectedTokens } = tokens
+      const tokensStore = useTokensStore()
+      const { selectedTokens } = tokensStore
       const { removeLiquidityPair } = liquidity
 
       // amount0 = (liquidity * balance0) / _totalSupply; // using balances ensures pro-rata distribution
