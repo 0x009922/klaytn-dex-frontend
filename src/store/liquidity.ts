@@ -1,12 +1,8 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
-import { useTokensStore } from '@/store/tokens'
-
 import kip7 from '@/utils/smartcontracts/kip-7.json'
 import pairAbi from '@/utils/smartcontracts/pair.json'
-import config from '@/plugins/kaikas/Config'
-
-import $kaikas from '@/plugins/kaikas'
+import config from '@/utils/kaikas/Config'
 
 export const useLiquidityStore = defineStore('liquidity', {
   state() {
@@ -728,4 +724,4 @@ export const useLiquidityStore = defineStore('liquidity', {
 })
 
 if (import.meta.hot)
-  import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useLiquidityStore, import.meta.hot))

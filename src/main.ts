@@ -3,9 +3,8 @@ import { setupLayouts } from 'virtual:generated-layouts'
 import App from './App.vue'
 import generatedRoutes from '~pages'
 
-import './styles/main.scss'
-
-import kaikas from '@/plugins/kaikas'
+import './styles/soramitsu-ui.sass'
+import './styles/main.sass'
 
 const routes = setupLayouts(generatedRoutes)
 
@@ -14,8 +13,7 @@ export const createApp = ViteSSG(
   App,
   { routes, base: import.meta.env.BASE_URL },
   (ctx) => {
-    // install all modules under `modules/`
-    Object.values(import.meta.globEager('./modules/*.ts')).forEach(i => i.install?.(ctx))
-    ctx.app.config.globalProperties.$kaikas = kaikas
+    // install all plugins under `plugins/`
+    Object.values(import.meta.globEager('./plugins/*.ts')).forEach(i => i.install?.(ctx))
   },
 )

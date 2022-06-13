@@ -3,8 +3,6 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import kip7 from '@/utils/smartcontracts/kip-7.json'
 import pairAbi from '@/utils/smartcontracts/pair.json'
 
-import $kaikas from '@/plugins/kaikas'
-
 const mockedTokens = [
   '0xb9920BD871e39C6EF46169c32e7AC4C698688881',
   '0x1CDcD477994e86A11E21C27ca907bEA266EA3A0a',
@@ -187,4 +185,4 @@ export const useTokensStore = defineStore('tokens', {
 })
 
 if (import.meta.hot)
-  import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useTokensStore, import.meta.hot))

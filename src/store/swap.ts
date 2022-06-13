@@ -1,11 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
-import { useTokensStore } from '@/store/tokens'
-
-import config from '@/plugins/kaikas/Config'
+import config from '@/utils/kaikas/Config'
 import kip7 from '@/utils/smartcontracts/kip-7.json'
-
-import $kaikas from '@/plugins/kaikas'
 
 const state = function () {
   return {
@@ -198,4 +194,4 @@ export const useSwapStore = defineStore('swap', {
 })
 
 if (import.meta.hot)
-  import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useSwapStore, import.meta.hot))

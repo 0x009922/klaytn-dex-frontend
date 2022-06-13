@@ -1,18 +1,12 @@
 <script>
 import { mapActions, mapState } from 'pinia'
-import { useKaikasStore } from '@/store/kaikas'
-import { useTokensStore } from '@/store/tokens'
-import { useLiquidityStore } from '@/store/liquidity'
 
 export default {
-  name: 'KlayView',
+  name: 'DefaultLayout',
   computed: {
-    ...mapState(useKaikasStore, ['address']),
+    ...mapState(useKaikasStore, ['address', 'isNotInstalled']),
     ...mapState(useTokensStore, ['tokensList']),
     ...mapState(useLiquidityStore, ['pairs']),
-    isNotInstalled() {
-      return !window?.klaytn
-    },
     getFormattedAddress() {
       const addressLength = this.address.length
       return `${this.address.slice(2, 6)}...${this.address.slice(
@@ -57,7 +51,7 @@ export default {
       loadPairs: 'getPairs',
     }),
     async connect() {
-      const address = await this.$kaikas.config.connectKaikas()
+      const address = await $kaikas.config.connectKaikas()
       if (address)
         this.connectKaikas(address)
 
@@ -93,7 +87,7 @@ export default {
         </a>
       </div>
       <div class="col col-center">
-        <Menu :items="links" />
+        <HeaderMenu :items="links" />
       </div>
 
       <div class="col col-right">

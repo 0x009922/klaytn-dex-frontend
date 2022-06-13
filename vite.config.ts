@@ -13,6 +13,7 @@ import Inspect from 'vite-plugin-inspect'
 import Prism from 'markdown-it-prism'
 import LinkAttributes from 'markdown-it-link-attributes'
 import SvgLoader from 'vite-svg-loader'
+import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 
 const markdownWrapperClasses = 'prose prose-sm m-auto text-left'
 
@@ -20,7 +21,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: '@import "@/styles/vars.scss";',
+        additionalData: '@import "@/styles/vars.sass";',
       },
     },
   },
@@ -38,11 +39,22 @@ export default defineConfig({
       reactivityTransform: true,
     }),
 
+    VueSetupExtend(),
+
     SvgLoader(),
 
     // https://github.com/hannoeru/vite-plugin-pages
     Pages({
       extensions: ['vue', 'md'],
+      extendRoute(route) {
+        if (route.path === '/trade') {
+          return {
+            ...route,
+            alias: '/',
+          }
+        }
+        return route
+      },
     }),
 
     // https://github.com/JohnCampionJr/vite-plugin-vue-layouts
@@ -68,11 +80,13 @@ export default defineConfig({
 
     // https://github.com/antfu/unplugin-vue-components
     Components({
+      dirs: ['src/common', 'src/components'],
       // allow auto load markdown components under `./src/components/`
       extensions: ['vue', 'md'],
       // allow auto import and register components used in markdown
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
       dts: 'src/components.d.ts',
+      directoryAsNamespace: false,
     }),
 
     // https://github.com/antfu/vite-plugin-md

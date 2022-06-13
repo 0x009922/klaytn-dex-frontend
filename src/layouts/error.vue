@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'KlayError',
+  name: 'ErrorLayout',
   layout: 'error',
   props: {
     error: {

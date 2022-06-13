@@ -2,7 +2,6 @@
 import { mapActions, mapState } from 'pinia'
 import { roundTo } from 'round-to'
 import web3 from 'web3'
-import { useLiquidityStore } from '@/store/liquidity'
 
 export default {
   computed: {
@@ -23,20 +22,20 @@ export default {
       return roundTo(Number(web3.utils.fromWei(v)), 5)
     },
     getFormattedPercent(v1, v2) {
-      const bigNA = this.$kaikas.bigNumber(v1)
-      const bigNB = this.$kaikas.bigNumber(v2)
+      const bigNA = $kaikas.bigNumber(v1)
+      const bigNB = $kaikas.bigNumber(v2)
       const percent = bigNA.dividedToIntegerBy(100)
 
       return `${bigNB.dividedBy(percent).toFixed(2)}%`
     },
 
     getFormattedTokens(pairBalance, userBalance, reserve) {
-      const bigNA = this.$kaikas.bigNumber(pairBalance)
-      const bigNB = this.$kaikas.bigNumber(userBalance)
+      const bigNA = $kaikas.bigNumber(pairBalance)
+      const bigNB = $kaikas.bigNumber(userBalance)
 
       const yourPoolShare = bigNB.dividedToIntegerBy(bigNA).multipliedBy(100)
 
-      const token0Pooled = this.$kaikas
+      const token0Pooled = $kaikas
         .bigNumber(reserve)
         .multipliedBy(yourPoolShare)
         .dividedToIntegerBy(100)
@@ -48,14 +47,14 @@ export default {
 </script>
 
 <template>
-  <Wrap>
+  <KlayWrap>
     <p class="liquidity--title">
       Add liquidity to receive LP tokens
     </p>
     <RouterLink to="/liquidity/add">
-      <Button class="liquidity--btn">
+      <KlayButton class="liquidity--btn">
         Add Liquidity
-      </Button>
+      </KlayButton>
     </RouterLink>
 
     <p class="liquidity--title mt">
@@ -63,21 +62,21 @@ export default {
     </p>
 
     <div v-if="!renderPairs" class="ma">
-      <Loader />
+      <KlayLoader />
     </div>
     <div v-else-if="!renderPairs.length">
       Empty
     </div>
     <div v-else class="liquidity--list">
       <div v-for="p in renderPairs" :key="p.address" class="liquidity--item">
-        <Collapse>
+        <KlayCollapse>
           <template #head>
             <div class="pair--head">
               <div class="pair--icon-f">
-                <Icon :char="p.symbolA[0]" name="empty-token" />
+                <KlayIcon :char="p.symbolA[0]" name="empty-token" />
               </div>
               <div class="pair--icon-s">
-                <Icon :char="p.symbolB[0]" name="empty-token" />
+                <KlayIcon :char="p.symbolB[0]" name="empty-token" />
               </div>
 
               <!--              <img -->
@@ -147,10 +146,10 @@ export default {
               </div>
             </div>
           </template>
-        </Collapse>
+        </KlayCollapse>
       </div>
     </div>
-  </Wrap>
+  </KlayWrap>
 </template>
 
 <style scoped lang="scss">
