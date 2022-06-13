@@ -2,7 +2,7 @@
 import { mapActions, mapState } from 'pinia'
 
 export default {
-  name: 'KlaySwap',
+  name: 'Swap',
   data() {
     return {
       isSwapLoading: false,
