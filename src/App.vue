@@ -20,8 +20,8 @@ useHead({
 </script>
 
 <template>
-  <RouterView />
-  <SNotificationsProvider>
-    <slot />
+  <SNotificationsProvider placement="bottom-right">
+    <RouterView />
+    <NotificationsInit />
   </SNotificationsProvider>
 </template>
