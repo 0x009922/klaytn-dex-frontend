@@ -1,7 +1,6 @@
-<script>
+<script lang="ts">
 export default {
   name: 'ErrorLayout',
-  layout: 'error',
   props: {
     error: {
       type: String,

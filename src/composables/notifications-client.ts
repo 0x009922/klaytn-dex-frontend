@@ -1,5 +1,9 @@
-import { useNotifications } from '@soramitsu-ui/ui'
+import type { ShowNotificationParams, ShowNotificationReturn } from '@soramitsu-ui/ui'
 
-export const $notify = function (message: string) {
-  console.log(message)
+window.$notify = () => {
+  throw new Error('Notifications haven\'t been initialized yet')
+}
+
+export const $notify = function (params: ShowNotificationParams): ShowNotificationReturn {
+  return window.$notify(params)
 }

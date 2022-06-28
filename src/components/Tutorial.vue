@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
 import { mapActions, mapState } from 'pinia'
 
 export default {
-  name: 'NuxtTutorial',
+  name: 'Tutorial',
   components: {},
   computed: {
     ...mapState(useKaikasStore, ['address', 'isNotInstalled']),

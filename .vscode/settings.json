@@ -17,7 +17,14 @@
   "nprogress",
   "Klay",
   "typecheck",
-  "soramitsu"
+  "soramitsu",
+  "vnode",
+  "composables",
+  "klaytn",
+  "bignumber",
+  "smartcontracts",
+  "typechain",
+  "WKLAY"
 ],
   "i18n-ally.sourceLanguage": "en",
   "i18n-ally.keystyle": "nested",
