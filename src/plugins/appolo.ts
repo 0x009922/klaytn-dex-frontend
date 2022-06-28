@@ -1,4 +1,4 @@
-import {ApolloClient, InMemoryCache} from '@apollo/client/core'
+import { ApolloClient, InMemoryCache } from '@apollo/client/core'
 import { createApolloProvider } from '@vue/apollo-option'
 import type { Plugin } from '@/types'
 
@@ -13,7 +13,6 @@ const apolloProvider = createApolloProvider({
 })
 
 export const install: Plugin = ({ app }) => {
-  // @ts-expect-error
   app.use(apolloProvider)
   // @ts-expect-error
   app.use(apolloClient)
