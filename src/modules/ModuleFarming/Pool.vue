@@ -37,8 +37,8 @@ const modelOpen = computed({
   },
 })
 
-const iconChars = computed(() => {
-  return pool.value.name.split('-').map((tokenName) => tokenName[0])
+const tokenSymbols = computed(() => {
+  return pool.value.name.split('-')
 })
 
 const formattedStaked = computed(() => {
@@ -167,10 +167,10 @@ function handleModalClose() {
       <div v-bem="'head'">
         <div v-bem="'icons'">
           <KlayCharAvatar
-            v-for="(char, index) in iconChars"
+            v-for="(symbol, index) in tokenSymbols"
             :key="index"
             v-bem="'icon'"
-            :content="char"
+            :content="symbol"
           />
         </div>
         <div v-bem="'name'">

@@ -36,8 +36,8 @@ const emit = defineEmits<{
 const show = useVModel(props, 'modelValue', emit)
 const value = ref('0')
 
-const iconChars = computed(() => {
-  return pool.value.name.split('-').map((tokenName) => tokenName[0])
+const tokenSymbols = computed(() => {
+  return pool.value.name.split('-')
 })
 
 const formattedStaked = computed(() => {
@@ -167,10 +167,10 @@ function confirm() {
             </KlayButton>
             <div v-bem="'pair-icons'">
               <KlayCharAvatar
-                v-for="(char, index) in iconChars"
+                v-for="(symbol, index) in tokenSymbols"
                 :key="index"
                 v-bem="'pair-icon'"
-                :content="char"
+                :content="symbol"
               />
             </div>
             <div v-bem="'pair-name'">
