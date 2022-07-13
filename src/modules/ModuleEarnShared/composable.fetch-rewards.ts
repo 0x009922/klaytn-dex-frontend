@@ -21,10 +21,11 @@ export function useFetchRewards<T extends PoolId | Address>({
 }: GenericFetchRewardsProps<T>): {
   rewards: Ref<null | Rewards<T>>
   areRewardsFetched: Ref<boolean>
+  fetchImmediately: () => void
 } {
   const MulticallContract = kaikas.cfg.createContract<Multicall>(MULTICALL_CONTRACT_ADDRESS, MULTICALL)
 
-  const maybeStaleState = useScope(
+  const fetchScope = useScope(
     computed(() => !!poolIds.value),
     () => {
       const task = useTask(async () => {
@@ -59,14 +60,18 @@ export function useFetchRewards<T extends PoolId | Address>({
 
       run()
 
-      return useStaleIfErrorState(task)
+      return { state: useStaleIfErrorState(task), run }
     },
   )
 
   const rewards = computed(() => {
-    return maybeStaleState.value?.setup.result?.some?.rewards ?? null
+    return fetchScope.value?.setup.state.result?.some?.rewards ?? null
   })
   const areRewardsFetched = computed(() => !!rewards.value)
 
-  return { rewards, areRewardsFetched }
+  function fetchImmediately() {
+    fetchScope.value?.setup.run()
+  }
+
+  return { rewards, areRewardsFetched, fetchImmediately }
 }
