@@ -198,12 +198,10 @@ async function handleModalClose() {
           <KlayIcon
             v-bem="'icon'"
             :symbol="pool.rewardToken.symbol"
-            :lightness="65"
           />
           <KlayIcon
             v-bem="'icon'"
             :symbol="pool.stakeToken.symbol"
-            :lightness="75"
           />
         </div>
         <div v-bem="'title'">

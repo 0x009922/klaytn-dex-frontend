@@ -154,8 +154,8 @@ const pools = computed<Pool[] | null>(() => {
       decimals: Number(pool.stakeToken.decimals)
     }
     const rewardToken = {
-      ...pool.stakeToken,
-      decimals: Number(pool.stakeToken.decimals)
+      ...pool.rewardToken,
+      decimals: Number(pool.rewardToken.decimals)
     }
 
     const staked = $kaikas.bigNumber($kaikas.fromWei(pool.users[0]?.amount ?? '0'))
