@@ -20,14 +20,29 @@ const config = useConfigWithConnectedKaikas()
 const vBem = useBemClass()
 
 const props = defineProps<{
+  modelValue: boolean
   pool: Pool
   operation: ModalOperation
 }>()
 const { pool, operation } = toRefs(props)
 const emit = defineEmits<{
-  (e: 'close'): void
+  (event: 'update:modelValue', value: boolean): void
   (e: 'staked' | 'unstaked', value: string): void
 }>()
+
+const model = ref(props.modelValue)
+watch(
+  () => props.modelValue,
+  (origin) => {
+    model.value = origin
+    value.value = '0'
+  },
+)
+watch(model, (dep) => {
+  if (dep !== props.modelValue) {
+    emit('update:modelValue', dep)
+  }
+})
 
 const value = ref('0')
 const loading = ref(false)
@@ -72,7 +87,10 @@ const disabled = computed(() => {
 })
 
 function setMax() {
-  value.value = `${pool.value.balance}`
+  if (operation.value === ModalOperation.Stake)
+    value.value = `${pool.value.balance}`
+  else
+    value.value = `${pool.value.staked}`
 }
 
 const FarmingContract = $kaikas.config.createContract<Farming>(farmingContractAddress, farmingAbi.abi as AbiItem[])
@@ -144,9 +162,9 @@ async function confirm() {
 
 <template>
   <KlayModal
+    v-model="model"
     width="420"
     :label="label"
-    @close="emit('close')"
   >
     <div v-bem="'row'">
       <div v-bem="'input-wrapper'">

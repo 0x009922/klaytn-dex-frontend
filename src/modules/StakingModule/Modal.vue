@@ -39,12 +39,17 @@ watch(
   () => props.modelValue,
   (origin) => {
     model.value = origin
+    value.value = '0'
   },
 )
 watch(model, (dep) => {
   if (dep !== props.modelValue) {
     emit('update:modelValue', dep)
   }
+})
+
+watch(model, () => {
+  value.value = '0'
 })
 
 const PoolContract = config.createContract<StakingInitializable>(pool.value.id, stakingAbi.abi as AbiItem[])
