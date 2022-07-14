@@ -109,13 +109,13 @@ FarmingQuery.onResult(() => {
 async function fetchBlockNumber() {
   blockNumber.value = await caver.klay.getBlockNumber()
 
-  if (intervals.blockNumber === null)
-    intervals.blockNumber = useIntervalFn(() => {
-      if (blockNumber.value === null)
-        return
+  // if (intervals.blockNumber === null)
+  //   intervals.blockNumber = useIntervalFn(() => {
+  //     if (blockNumber.value === null)
+  //       return
 
-      blockNumber.value += 1
-    }, 1000)
+  //     blockNumber.value += 1
+  //   }, 1000)
 }
 
 onBeforeUnmount(() => {

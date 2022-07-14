@@ -23,6 +23,7 @@ import stakingAbi from '@/utils/smartcontracts/staking.json'
 import multicallAbi from '@/utils/smartcontracts/multicall.json'
 import { useConfigWithConnectedKaikas } from '@/utils/kaikas/config'
 import { Multicall } from '@/types/typechain/farming/MultiCall.sol'
+import { fromWei } from './utils'
 
 const { caver } = window
 const config = useConfigWithConnectedKaikas()
@@ -67,13 +68,13 @@ const rawPoolIds = computed(() => {
 async function fetchBlockNumber() {
   blockNumber.value = await caver.klay.getBlockNumber()
 
-  if (intervals.blockNumber === null)
-    intervals.blockNumber = useIntervalFn(() => {
-      if (blockNumber.value === null)
-        return
-
-      blockNumber.value += 1
-    }, 1000)
+  // if (intervals.blockNumber === null)
+  //   intervals.blockNumber = useIntervalFn(() => {
+  //     if (blockNumber.value === null)
+  //       return
+  //     console.log(12332231)
+  //     blockNumber.value += 1
+  //   }, 1000000000000000000)
 }
 
 onBeforeUnmount(() => {
@@ -109,7 +110,7 @@ async function fetchRewards(poolIds?: Pool['id'][]) {
   result.returnData.forEach((hexString, index) => {
     if (!ids) return
     const poolId = ids[index]
-    newRewards[poolId] = $kaikas.utils.fromWei(caver.klay.abi.decodeParameter('uint256', hexString))
+    newRewards[poolId] = `${fromWei(caver.klay.abi.decodeParameter('uint256', hexString), pools.value?.find(pool => pool.id === poolId)?.rewardToken.decimals)}`
   })
 
   blockNumber.value = Number(result.blockNumber)
