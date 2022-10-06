@@ -1,26 +1,7 @@
+import { Percent } from '@/core'
 import BigNumber from 'bignumber.js'
 import { expect, test, describe } from 'vitest'
-import { formatRate, formatPercent, formatNumberWithCommas } from './common'
-
-describe('format rate', () => {
-  test('case 1', () => {
-    expect(formatRate('423', '20')).toMatchInlineSnapshot('"21.15000"')
-  })
-
-  test('case 2', () => {
-    expect(formatRate('1000', '3.5')).toMatchInlineSnapshot('"285.71429"')
-  })
-})
-
-describe('format percent', () => {
-  test('case 1', () => {
-    expect(formatPercent('423', '20')).toMatchInlineSnapshot('"5.00%"')
-  })
-
-  test('case 2', () => {
-    expect(formatPercent('1000', '3.5')).toMatchInlineSnapshot('"0.35%"')
-  })
-})
+import { formatNumberWithCommas, numberToPercent } from './common'
 
 describe('number with commas', () => {
   test.each([
@@ -35,5 +16,16 @@ describe('number with commas', () => {
     [new BigNumber(12_123_123.012), '12,123,123.012'],
   ])('Formats %s to %s', (input, output) => {
     expect(formatNumberWithCommas(input)).toEqual(output)
+  })
+})
+
+describe('number to percent', () => {
+  test.each([
+    [0, 2, new Percent(0, 1)],
+    [0.5, 2, new Percent(50, 100)],
+    [0.77123, 3, new Percent(771, 1000)],
+    [0.12, 10, new Percent(0.12 * 10 ** 10, 10 ** 10)],
+  ])('Number %o with precision %o comes to percent %o', (num, precision, percent) => {
+    expect(numberToPercent(num, precision).quotient.toFixed()).toEqual(percent.quotient.toFixed())
   })
 })
