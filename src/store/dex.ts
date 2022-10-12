@@ -1,6 +1,16 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { JsonRpcProvider } from '@ethersproject/providers'
-import { Dex, DexPure, NETWORK, AbiLoader, useWeb3Provider, ADDRESS_ROUTER, ADDRESS_FACTORY, Address } from '@/core'
+import {
+  Dex,
+  DexPure,
+  NETWORK,
+  AbiLoader,
+  useWeb3Provider,
+  ADDRESS_ROUTER,
+  ADDRESS_FACTORY,
+  Address,
+  SupportedWallet,
+} from '@/core'
 import invariant from 'tiny-invariant'
 
 export type ActiveDex =
@@ -10,12 +20,12 @@ export type ActiveDex =
     }
   | {
       kind: 'named'
-      wallet: string
+      wallet: SupportedWallet
       dex: () => Dex
     }
 
 export interface AnyDex {
-  key: string
+  key: 'anon' | SupportedWallet
   dex: () => DexPure | Dex
 }
 
@@ -70,7 +80,7 @@ export const useDexStore = defineStore('dex', () => {
 
   const anyDex = computed<AnyDex>(() => {
     const x = active.value
-    return x.kind === 'anon' ? { key: 'anon', dex: x.dex } : { key: `wallet-${x.wallet}`, dex: x.dex }
+    return x.kind === 'anon' ? { key: 'anon', dex: x.dex } : { key: x.wallet, dex: x.dex }
   })
 
   const account = computed<Address | null>(() =>
@@ -84,6 +94,15 @@ export const useDexStore = defineStore('dex', () => {
     invariant(act.kind === 'named')
     return act.dex()
   }
+
+  const openModal = ref(false)
+
+  whenever(
+    () => !!connectState.value?.fulfilled,
+    () => {
+      openModal.value = false
+    },
+  )
 
   return {
     abi: () => abi,
@@ -102,6 +121,7 @@ export const useDexStore = defineStore('dex', () => {
     isWalletConnected,
     getNamedDexAnyway,
 
+    openModal,
     initialDelayActive,
   }
 })
