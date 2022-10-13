@@ -48,10 +48,6 @@ const poolSymbols = computed<TokensPair<CurrencySymbol>>(() => {
   return { tokenA: a, tokenB: b }
 })
 
-const formattedEarned = computed(() => {
-  return formatCurrency({ amount: new BigNumber(pool.value.earned ?? 0), decimals: FORMATTED_BIG_INT_DECIMALS })
-})
-
 const formattedAnnualPercentageRate = computed(() => {
   return '%' + new BigNumber(pool.value.annualPercentageRate.toFixed(2, BigNumber.ROUND_UP))
 })
@@ -69,7 +65,7 @@ const formattedMultiplier = computed(() => {
 
 const stats = computed(() => {
   return {
-    earned: formattedEarned.value,
+    earned: pool.value.earned,
     annualPercentageRate: formattedAnnualPercentageRate.value,
     liquidity: formattedLiquidity.value,
     multiplier: formattedMultiplier.value,
@@ -159,7 +155,6 @@ function openRoiCalculator() {
         <div
           v-for="(value, label) in stats"
           :key="label"
-          class="space-y-1"
         >
           <div class="stats-item-label">
             {{ t(`ModuleFarmingPool.stats.${label}`) }}
@@ -178,12 +173,19 @@ function openRoiCalculator() {
             />
           </div>
 
-          <span
+          <div
+            v-else-if="label === 'earned'"
+            class="stats-item-value"
+          >
+            <CurrencyFormatTruncate :amount="value" />
+          </div>
+
+          <div
             v-else
             class="stats-item-value"
           >
             {{ value }}
-          </span>
+          </div>
         </div>
       </div>
     </template>
@@ -238,7 +240,6 @@ function openRoiCalculator() {
 
             <div class="input-label flex items-center">
               <span class="flex-1">Earned DEX Tokens</span>
-              <span>Earned for all time: <i>TODO</i></span>
             </div>
 
             <span />
@@ -248,7 +249,6 @@ function openRoiCalculator() {
                 <CurrencyFormat
                   v-slot="{ formatted }"
                   :amount="pool.staked"
-                  decimals="6"
                 >
                   <input
                     :value="formatted"
@@ -284,7 +284,10 @@ function openRoiCalculator() {
               </template>
 
               <template #right>
-                <KlayButton @click="withdraw()">
+                <KlayButton
+                  :disabled="pool.earned?.isZero() ?? true"
+                  @click="withdraw()"
+                >
                   Withdraw
                 </KlayButton>
               </template>
@@ -368,12 +371,15 @@ function openRoiCalculator() {
     font-weight: 500;
     font-size: 12px;
     color: vars.$gray2;
-    line-height: 1rem;
+    line-height: 100%;
   }
 
   &-value {
-    line-height: 1rem;
+    font-weight: 600;
     font-size: 16px;
+    color: vars.$dark;
+    margin-top: 2px;
+    margin-bottom: 12px;
   }
 }
 

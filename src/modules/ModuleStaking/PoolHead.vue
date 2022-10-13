@@ -51,7 +51,7 @@ const nonNegativeEndsIn = computed(() => Math.max(0, props.endsIn))
         Earned
       </div>
       <div :class="[$style.value, { [$style.valueEmpty]: !earned || earned.isEqualTo(0) }]">
-        <CurrencyFormat :amount="earned" />
+        <CurrencyFormatTruncate :amount="earned" />
       </div>
     </div>
 
@@ -131,7 +131,8 @@ const nonNegativeEndsIn = computed(() => Math.max(0, props.endsIn))
   font-weight: 600;
   font-size: 16px;
   color: vars.$dark;
-  margin-top: 8px;
+  margin-top: 2px;
+  margin-bottom: 12px;
 }
 
 .valueEmpty {
