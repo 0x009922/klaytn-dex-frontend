@@ -13,6 +13,7 @@ import invariant from 'tiny-invariant'
 import AddToWallet from './PoolAddToWallet.vue'
 
 const dexStore = useDexStore()
+const tokensStore = useTokensStore()
 const { notify } = useNotify()
 
 const router = useRouter()
@@ -24,7 +25,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'staked' | 'unstaked', value: WeiAsToken): void
+  (e: 'staked' | 'unstaked', value: WeiAsToken<BigNumber>): void
   (e: 'withdrawn'): void
 }>()
 
@@ -151,6 +152,8 @@ wheneverDone(withdrawState, (result) => {
     })
     notify({ type: 'ok', description: `${formatted} tokens were withdrawn` })
     emit('withdrawn')
+
+    tokensStore.touchUserBalance()
   } else {
     notify({
       type: 'err',
@@ -162,12 +165,12 @@ wheneverDone(withdrawState, (result) => {
 
 function handleStaked(amount: WeiAsToken<BigNumber>) {
   modalOperation.value = null
-  emit('staked', amount.toFixed() as WeiAsToken)
+  emit('staked', amount)
 }
 
 function handleUnstaked(amount: WeiAsToken<BigNumber>) {
   modalOperation.value = null
-  emit('unstaked', amount.toFixed() as WeiAsToken)
+  emit('unstaked', amount)
 }
 
 function openRoiCalculator() {
