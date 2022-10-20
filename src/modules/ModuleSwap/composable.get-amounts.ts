@@ -5,7 +5,7 @@ import { Trade, SwapPure, Wei, Percent, TokenAmount, TokenImpl, Token } from '@/
 import {
   AmountsExactIn,
   AmountsExactOut,
-  AmountsInOut,
+  GetAmountsReturn,
   applySlippageForExactInput,
   applySlippageForExactOutput,
   parseSlippage,
@@ -20,7 +20,7 @@ export interface GetAmountsProps {
   trade: Trade
 }
 
-export interface GetAmountsResult extends AmountsInOut {
+export interface GetAmountsResult extends GetAmountsReturn {
   mode: 'exact-in' | 'exact-out'
 }
 
@@ -59,7 +59,12 @@ export function useSwapAmounts(props: Ref<null | GetAmountsProps>) {
         }
       )
     }),
-    ({ props, dex: { swap } }) => {
+    ({
+      payload: {
+        props,
+        dex: { swap },
+      },
+    }) => {
       debug('setting amounts: %o', props)
 
       const { state, run } = useTask(() => getAmounts({ ...props, swap }), { immediate: true })
